@@ -24,31 +24,18 @@ class _LoginPageState extends State<LoginPage> {
 
   void _validatePhone(String value) {
     final english = _toEnglishDigits(value).replaceAll(RegExp(r'\s+'), '');
-    final patterns = [
-      RegExp(r'^09\d{9}$'),
-      RegExp(r'^989\d{9}$'),
-      RegExp(r'^\+989\d{9}$'),
-    ];
-
-    final matched = patterns.any((pattern) => pattern.hasMatch(english));
+    final pattern = RegExp(r'^9\d{9}$');
+    final isOk = pattern.hasMatch(english);
     setState(() {
-      isValid = matched;
-      errorText = matched ? null : 'شماره معتبر نیست';
+      isValid = isOk;
+      errorText = isOk ? null : 'شماره معتبر نیست';
     });
   }
 
   void _onNext() {
-    final phone = _toEnglishDigits(phoneController.text).replaceAll(' ', '');
-    final cleanPhone =
-        phone.startsWith('09')
-            ? phone
-            : phone.startsWith('989')
-            ? '0${phone.substring(2)}'
-            : phone.startsWith('+989')
-            ? '0${phone.substring(3)}'
-            : phone;
-
-    context.go('/success?phone=$cleanPhone');
+    final raw = _toEnglishDigits(phoneController.text).replaceAll(' ', '');
+    final phone = '0$raw';
+    context.go('/password?phone=$phone');
   }
 
   @override
@@ -91,24 +78,18 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     SizedBox(width: 12),
                     Container(
-                      padding: const EdgeInsets.symmetric(
+                      padding: EdgeInsets.symmetric(
                         horizontal: 12,
                         vertical: 12,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.white,
                         border: Border.all(color: Colors.grey.shade300),
                         borderRadius: BorderRadius.circular(12),
+                        color: Colors.white,
                       ),
                       child: Row(
-                        children: const [
-                          Text(
-                            '+98',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
+                        children: [
+                          Text('+98', style: TextStyle(fontSize: 16)),
                           SizedBox(width: 8),
                           Icon(Icons.flag, size: 20),
                         ],
@@ -131,10 +112,7 @@ class _LoginPageState extends State<LoginPage> {
                       foregroundColor:
                           isValid ? Colors.white : Colors.grey.shade600,
                     ),
-                    child: Text(
-                      'تایید و ادامه',
-                      style: TextStyle(fontSize: 16),
-                    ),
+                    child: Text('تایید و ادامه'),
                   ),
                 ),
               ],

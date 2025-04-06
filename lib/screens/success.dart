@@ -9,7 +9,7 @@ class SuccessPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ورود موفق'),
+        title:  Text('ورود موفق'),
         backgroundColor: Colors.teal,
         foregroundColor: Colors.white,
       ),
@@ -17,7 +17,7 @@ class SuccessPage extends StatelessWidget {
         child: Text(
           'شماره وارد شده:\n$phone',
           textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 20),
+          style:  TextStyle(fontSize: 20),
         ),
       ),
     );
